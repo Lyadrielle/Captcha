@@ -48,6 +48,7 @@ public class MainUi {
 		ResourceManager.getAllFiles(new File(filePath.toString()), "jpg", resources, imgTags);
 		ResourceManager.display(resources);
 		
+		
 		// JAVA WINDOW PRESET ATTRIBUTS & LAYOUTS/FRAME
 		JFrame frame = new JFrame("Capcha");
 		GridLayout layout = createLayout();
@@ -59,7 +60,20 @@ public class MainUi {
 		
 		// CREATE ELEMENTS OF THE PROGRAM
 		JButton okButton = createOkButton();
-		ArrayList<JLabel> labelImages = createAllLabelImages(resources, 9);
+		
+		ArrayList<Resource> selectedForLabel = new ArrayList<Resource>();
+		ArrayList<JLabel> labelImages = createAllLabelImages(resources, 9,selectedForLabel);
+		Logic logic = new Logic();
+		
+		int randomNum = ThreadLocalRandom.current().nextInt(0, selectedForLabel.size() - 1);
+		System.out.println("choisissons un element au hasard: "+randomNum);
+		ArrayList<String> successTags= selectedForLabel.get(randomNum).getTags();
+		System.out.println("son taglist: "+successTags);
+		
+		logic.sortLabel(selectedForLabel, successTags);
+		ResourceManager.display(logic._validResources);
+		ResourceManager.display(logic._wrongResources);
+		
 		
 		// ADD ALL ELEMENTS TO THE FRAME/LAYOUT
 		setAllFrames(frame, labelImages);
@@ -68,6 +82,8 @@ public class MainUi {
 		
 		// SET FRAME VISIBLE
 		frame.setVisible(true);
+		
+		
 	}
 	
    ////////////////////////////////////////////////////////////////////
@@ -173,7 +189,7 @@ public class MainUi {
 	 * @param resources
 	 * @return
 	 */
-	private static ArrayList<JLabel> createAllLabelImages(ArrayList<Resource> resources, int nbImages) {
+	private static ArrayList<JLabel> createAllLabelImages(ArrayList<Resource> resources, int nbImages,ArrayList<Resource>selectedForLabel) {
 		ArrayList<JLabel> listOfLabelImages = new ArrayList<JLabel>();
 		ArrayList<Resource> imagesClone = ResourceManager.clone(resources);
 		
@@ -187,6 +203,9 @@ public class MainUi {
 			}catch(IOException e) {
 				System.out.println (e.toString());
 		        System.out.println("No such file at: " + imagesClone.get(randomNum));
+			}
+			if(!selectedForLabel.contains(imagesClone.get(randomNum))) {
+				selectedForLabel.add(imagesClone.get(randomNum));
 			}
 			
 			imagesClone.remove(randomNum);

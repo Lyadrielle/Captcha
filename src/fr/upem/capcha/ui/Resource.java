@@ -77,7 +77,7 @@ public class Resource extends java.lang.Object implements java.lang.Cloneable {
 	 * 
 	 */
 	public void display() {
-		System.out.print("PATH:\t" + _path + "\nTAGS:\t" + _tags.toString());
+		System.out.println("PATH:\t" + _path + "\tTAGS:\t" + _tags.toString());
 	}
 	
 	/**

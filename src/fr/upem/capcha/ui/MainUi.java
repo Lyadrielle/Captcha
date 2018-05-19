@@ -30,7 +30,11 @@ import javax.swing.JTextArea;
 
 public class MainUi {
 	
-	private static ArrayList<URL> selectedImages = new ArrayList<URL>();
+	//private static ArrayList<URL> selectedImages = new ArrayList<URL>();
+	private static ArrayList<Resource> selectedImages = new ArrayList<Resource>();
+	private static Logic logic = new Logic();
+	private static Boolean hasSuccessed=false;
+	private static Boolean hasClicked=false;
 	
 	public static void main(String[] args) throws IOException {
 		////////////////////////////////////////////////////////////////////
@@ -63,7 +67,7 @@ public class MainUi {
 		
 		ArrayList<Resource> selectedForLabel = new ArrayList<Resource>();
 		ArrayList<JLabel> labelImages = createAllLabelImages(resources, 9,selectedForLabel);
-		Logic logic = new Logic();
+		
 		
 		int randomNum = ThreadLocalRandom.current().nextInt(0, selectedForLabel.size() - 1);
 		System.out.println("choisissons un element au hasard: "+randomNum);
@@ -71,17 +75,18 @@ public class MainUi {
 		System.out.println("son taglist: "+successTags);
 		
 		logic.sortLabel(selectedForLabel, successTags);
-		ResourceManager.display(logic._validResources);
-		ResourceManager.display(logic._wrongResources);
 		
 		
 		// ADD ALL ELEMENTS TO THE FRAME/LAYOUT
 		setAllFrames(frame, labelImages);
-		frame.add(new JTextArea("You Must select all the pictures containing a: "));
+		frame.add(new JTextArea("You Must select all the pictures containing a: "+successTags.get(1)+" "+successTags.get(0)));
 		frame.add(okButton);
 		
 		// SET FRAME VISIBLE
 		frame.setVisible(true);
+		
+		System.out.println("TERMINATED");
+		return;
 		
 		
 	}
@@ -114,6 +119,12 @@ public class MainUi {
 					@Override
 					public void run() { // c'est un runnable
 						System.out.println("J'ai cliqué sur Ok");
+						ResourceManager.display(selectedImages);
+						if(logic.hasCleared(selectedImages)) {
+							System.out.println("CLEARED");
+						}
+						hasClicked=true;
+						
 					}
 				});
 			}
@@ -167,12 +178,13 @@ public class MainUi {
 						if(!isSelected){
 							label.setBorder(BorderFactory.createLineBorder(Color.RED, 3));
 							isSelected = true;
-							selectedImages.add(url);
+							selectedImages.add(resource);
+							
 						}
 						else {
 							label.setBorder(BorderFactory.createEmptyBorder());
 							isSelected = false;
-							selectedImages.remove(url);
+							selectedImages.remove(resource);
 						}
 						
 					}

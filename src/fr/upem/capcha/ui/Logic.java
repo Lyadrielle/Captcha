@@ -30,7 +30,6 @@ public class Logic {
 	public void sortLabel(ArrayList<Resource> selectedForLabel,ArrayList<String> tags) {
 		for(Resource resource :selectedForLabel) {
 			resource.getTags();
-			System.out.println("wesh");
 			if(resource.getTags().equals(tags)) {
 				System.out.println("wesh2");
 				_validResources.add(resource);
@@ -45,4 +44,21 @@ public class Logic {
 	 * Fonction qui définit le succès ou l'echec si succès libre à
 	 * ton imagination sinon augmenter la difficulté
 	 */
+	public Boolean hasCleared(ArrayList<Resource> submitList) {
+		for(Resource resource: submitList) {
+			if(_validResources.contains(resource)) {
+				System.out.println(resource+" STATE: IN");
+			}
+			else {
+				if(_wrongResources.contains(resource)) {
+					System.out.println(resource+" STATE: OUT");
+					return false;
+				}else {
+					System.out.println(" ERROR : RESOURCE OUT OF CHECK");
+					return false;
+				}
+			}
+		}
+		return true;
+	}
 }

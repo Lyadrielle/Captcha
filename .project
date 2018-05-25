@@ -14,11 +14,4 @@
 	<natures>
 		<nature>org.eclipse.jdt.core.javanature</nature>
 	</natures>
-	<linkedResources>
-		<link>
-			<name>src/fr/upem/capcha/ui/image.jpg</name>
-			<type>1</type>
-			<locationURI>PROJECT_LOC/image.jpg</locationURI>
-		</link>
-	</linkedResources>
 </projectDescription>

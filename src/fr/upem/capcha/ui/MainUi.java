@@ -1,6 +1,5 @@
 package fr.upem.capcha.ui;
 
-import fr.upem.capcha.images.*;
 import java.awt.Color;
 import java.awt.EventQueue;
 import java.awt.GridLayout;
@@ -15,8 +14,6 @@ import java.net.URL;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
 
 import javax.imageio.ImageIO;
@@ -40,13 +37,14 @@ public class MainUi {
 		////////////////////////////////////////////////////////////////////
 		
 		// "GLOBAL" VARIABLES
+		
 		Path filePath = Paths.get(Paths.get(System.getProperty("user.dir")).toString(), "src", "fr", "upem", "capcha", "images");
 		ArrayList<Resource> resources = new ArrayList<Resource>();
 		ArrayList<String> imgTags = new ArrayList<String>();
 		
 		// SORT & STORE ALL PATHS & USEFUL INFORMATIONS
 		ResourceManager.getAllFiles(new File(filePath.toString()), "jpg", resources, imgTags);
-		ResourceManager.display(resources);
+		//ResourceManager.display(resources);
 		
 		// JAVA WINDOW PRESET ATTRIBUTS & LAYOUTS/FRAME
 		JFrame frame = new JFrame("Capcha");
@@ -60,6 +58,20 @@ public class MainUi {
 		// CREATE ELEMENTS OF THE PROGRAM
 		JButton okButton = createOkButton();
 		ArrayList<JLabel> labelImages = createAllLabelImages(resources, 9);
+		
+		Logic logic = new Logic();
+		logic.run(resources, imgTags);
+		logic.nextState();
+		
+		System.out.println("\n================================================");
+		
+		logic.run(resources, imgTags);
+		logic.nextState();
+		
+		System.out.println("\n================================================");
+		
+		logic.run(resources, imgTags);
+		logic.nextState();
 		
 		// ADD ALL ELEMENTS TO THE FRAME/LAYOUT
 		setAllFrames(frame, labelImages);
@@ -179,10 +191,10 @@ public class MainUi {
 		
 		for(int i = 0; i < nbImages; ++i) {
 			int randomNum = ThreadLocalRandom.current().nextInt(0, imagesClone.size() - 1);
-			System.out.println(randomNum);
+			//System.out.println(randomNum);
 			
 			try {
-				System.out.println(imagesClone.get(randomNum));
+				//System.out.println(imagesClone.get(randomNum));
 				listOfLabelImages.add(createLabelImage(imagesClone.get(randomNum)));
 			}catch(IOException e) {
 				System.out.println (e.toString());
